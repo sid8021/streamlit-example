@@ -50,7 +50,7 @@ transposed_data = transposed_data[~transposed_data['Question'].isin(["Services",
 
 st.dataframe(transposed_data, use_container_width=True)
 
-df1 = transposed_data['Response'].value_counts().rename_axis('unique_values').reset_index(name='counts')
+df1 = transposed_data['Response'].value_counts().rename_axis('Assessment Response').reset_index(name='Counts')
 
 st.write("Value Counts for NeSDA Parameters")
-st.bar_chart(df1, x='unique_values', y='counts', color='#00b3b3')
+st.bar_chart(df1, x='Assessment Response', y='Counts', color='#00b3b3')
