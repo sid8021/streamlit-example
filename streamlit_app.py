@@ -4,7 +4,7 @@ from pathlib import Path
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-data_path = Path("data/nesda.csv")
+data_path = Path("nesda.csv")
 
 st.title("NeSDA Dashboard - Himachal Pradesh_V1.0")
 
