@@ -1,38 +1,56 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
 import streamlit as st
+import pandas as pd
+from pathlib import Path
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-"""
-# Welcome to Streamlit!
+data_path = Path("data/nesda.csv")
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+st.title("NeSDA Dashboard - Himachal Pradesh_V1.0")
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
-
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+@st.cache_data
+def load_data(path:Path) -> pd.DataFrame:
+    data = pd.read_csv(path)
+    return data
 
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+# Create a text element and let the reader know the data is loading.
+data_load_state = st.text('Loading data....')
+# Load 10,000 rows of data into the dataframe.
+data = load_data(data_path)
+# Notify the reader that the data was successfully loaded.
+data_load_state.text('Loading data....done!')
 
-    Point = namedtuple('Point', 'x y')
-    data = []
 
-    points_per_turn = total_points / num_turns
+deptartment = st.selectbox(
+    'Select the Department',
+    data['Department'].unique())
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
+options_services = st.selectbox(
+    'Select the Service',
+    data[data['Department']==deptartment]['Services'].unique())
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+nesda_param = st.selectbox(
+    "Select the NeSDA-Parameter",
+    data[data['Department']==deptartment]['nesda_parameter'].unique()
+)
+
+filtered_data = data[data['Department']==deptartment][data['Services'] == options_services][data['nesda_parameter']==nesda_param]
+
+transposed_data = filtered_data.T
+transposed_data = transposed_data.reset_index()
+transposed_data.columns = ["Question", "Response"]
+# transposed_data = transposed_data.drop(transposed_data.Question.isin(["Services","Department","service_url","Sector",	"nesda_parameter"]).index)
+# transposed_data = transposed_data.notnull()
+transposed_data = transposed_data[transposed_data["Response"].notnull()]
+# df[~df['type'].isin(['hotel','Restaurant','estate'])]
+st.write("Go to the service url to see more details")
+st.write(transposed_data.loc[transposed_data["Question"]=="service_url","Response"])
+transposed_data = transposed_data[~transposed_data['Question'].isin(["Services","Department","service_url","Sector","nesda_parameter"])]
+
+st.dataframe(transposed_data, use_container_width=True)
+
+df1 = transposed_data['Response'].value_counts().rename_axis('unique_values').reset_index(name='counts')
+
+st.write("Value Counts for Nesda Parameters")
+st.bar_chart(df1, x='unique_values', y='counts', color='#00b3b3')
