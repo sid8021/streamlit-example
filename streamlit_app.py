@@ -31,7 +31,7 @@ options_services = st.selectbox(
     data[data['Department']==deptartment]['Services'].unique())
 
 nesda_param = st.selectbox(
-    "Select the NeSDA-Parameter",
+    "Select the NeSDA Parameter",
     data[data['Department']==deptartment]['nesda_parameter'].unique()
 )
 
@@ -52,5 +52,5 @@ st.dataframe(transposed_data, use_container_width=True)
 
 df1 = transposed_data['Response'].value_counts().rename_axis('unique_values').reset_index(name='counts')
 
-st.write("Value Counts for Nesda Parameters")
+st.write("Value Counts for NeSDA Parameters")
 st.bar_chart(df1, x='unique_values', y='counts', color='#00b3b3')
