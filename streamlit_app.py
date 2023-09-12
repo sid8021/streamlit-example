@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-import seaborn as sns
+#import seaborn as sns
 import matplotlib.pyplot as plt
 
 data_path = Path("data/nesda.csv")
