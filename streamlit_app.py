@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 data_path = Path("nesda.csv")
 
-st.title("NeSDA Dashboard - Himachal Pradesh_V1.0")
+st.title("NeSDA Dashboard - Himachal Pradesh V1.0")
 
 @st.cache_data
 def load_data(path:Path) -> pd.DataFrame:
