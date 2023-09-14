@@ -54,3 +54,7 @@ df1 = transposed_data['Response'].value_counts().rename_axis('Assessment Respons
 
 st.write("Value Counts for NeSDA Parameters")
 st.bar_chart(df1, x='Assessment Response', y='Counts', color='#00b3b3')
+
+
+
+st.caption("Please report bugs at siddharthsekhar_s@isb.edu")
