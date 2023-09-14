@@ -57,4 +57,4 @@ st.bar_chart(df1, x='Assessment Response', y='Counts', color='#00b3b3')
 
 
 
-st.caption("Please report bugs at siddharthsekhar_s@isb.edu")
+st.caption("Please report feedback at siddharthsekhar_s@isb.edu")
