@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 data_path = Path("nesda.csv")
 
-st.title("Live only during presentation")
-#st.title("NeSDA Dashboard - Himachal Pradesh V1.0")
+#st.title("Live only during presentation")
+st.title("NeSDA Dashboard - Himachal Pradesh V1.0")
 
 @st.cache_data
 def load_data(path:Path) -> pd.DataFrame:
